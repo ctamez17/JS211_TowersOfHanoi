@@ -30,27 +30,55 @@ const printStacks = () => {
 }
 
 // Next, what do you think this function should do?
-const movePiece = () => {
+const movePiece = (startStack, endStack) => {
   // Your code here
-
+  let actionPiece = stacks[startStack].pop();
+  stacks[endStack].push(actionPiece);
 }
 
 // Before you move, should you check if the move it actually allowed? Should 3 be able to be stacked on 2
-const isLegal = () => {
+const isLegal = (startStack, endStack) => {
   // Your code here
+  //startStack = startStack.trim().toLowerCase(); <-------- Fix me
 
+  let moveablePiece = [stacks[startStack].length-1];
+  let targetLocation = stacks[endStack];
+  if(moveablePiece > 0 && targetLocation.length == 0){
+    return true;
+  }else{
+    return false;
+  }
+}
+
+const isLegalCharacter = (startStack, endStack) => {
+  if(startStack === ('a' || 'b' || 'c') && endStack === ('a' || 'b' || 'c')){
+    return true;
+  }else{
+    return false;
+  }
 }
 
 // What is a win in Towers of Hanoi? When should this function run?
 const checkForWin = () => {
   // Your code here
+  if(stacks.b.length === 4 || stacks.c.length === 4){
+    return true;
+  }else{
+    return false;
+  }
 
 }
 
 // When is this function called? What should it do with its argument?
 const towersOfHanoi = (startStack, endStack) => {
+  //startStack = startStack.toLowerCase();
   // Your code here
-
+  checkForWin();
+  if(isLegal(startStack, endStack) === true){
+    movePiece(startStack, endStack);
+  }else{
+    console.log("--- " + startStack + " to " + endStack + " is an invalid move ---");
+  }
 }
 
 const getPrompt = () => {
@@ -64,7 +92,6 @@ const getPrompt = () => {
 }
 
 // Tests
-
 if (typeof describe === 'function') {
 
   describe('#towersOfHanoi()', () => {
@@ -94,15 +121,39 @@ if (typeof describe === 'function') {
   });
   describe('#checkForWin()', () => {
     it('should detect a win', () => {
-      stacks = { a: [], b: [4, 3, 2, 1], c: [] };
+      stacks = { a: [], b: [], c: [4, 3, 2, 1] };
       assert.equal(checkForWin(), true);
       stacks = { a: [1], b: [4, 3, 2], c: [] };
       assert.equal(checkForWin(), false);
     });
   });
+  //CUSTOM TESTS
+  //test ideas (verify numbers, trim whitespace, reset board)
+  //Test 1
+  describe('#isLegalCharacter()', () => {
+    it('should not allow an illegal character', () => {
+      stacks = {
+        a: [4, 3, 2],
+        b: [1],
+        c: []
+      };
+      assert.equal(isLegalCharacter('1', 'X'), false);
+    });
+  });
+  // //Test 2
+  // describe('#isLegal()', () => {
+  //   it('should not allow a capital character', () => {
+  //     assert.equal(towersOfHanoi('A', 'B'), false);
+  //   });
+  // });
+  // //Test 3
+  // describe('#isLegal()', () => {
+  //   it('should not allow spaces', () => {
+  //     assert.equal(towersOfHanoi(' '), false);
+  //   });
+  // });
 
 } else {
-
   getPrompt();
 
 }
