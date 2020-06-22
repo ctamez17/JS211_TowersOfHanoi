@@ -39,10 +39,14 @@ const movePiece = (startStack, endStack) => {
 // Before you move, should you check if the move it actually allowed? Should 3 be able to be stacked on 2
 const isLegal = (startStack, endStack) => {
   // Your code here
-  //startStack = startStack.trim().toLowerCase(); <-------- Fix me
+
+  startStack = startStack.trim().toLowerCase();
+  endStack = endStack.trim().toLowerCase();
 
   let moveablePiece = [stacks[startStack].length-1];
   let targetLocation = stacks[endStack];
+  
+  // if(moveablePiece > 0 && targetLocation.length == 0){
   if(moveablePiece > 0 && targetLocation.length == 0){
     return true;
   }else{
@@ -62,6 +66,7 @@ const isLegalCharacter = (startStack, endStack) => {
 const checkForWin = () => {
   // Your code here
   if(stacks.b.length === 4 || stacks.c.length === 4){
+    console.log("You win!");
     return true;
   }else{
     return false;
